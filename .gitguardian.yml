@@ -1,0 +1,73 @@
+# GitGuardian configuration
+# https://docs.gitguardian.com/
+
+version: 2
+
+# =========================
+# Global settings
+# =========================
+global:
+  # Fail CI if secrets are detected
+  fail_on_secrets: true
+
+  # Show detailed output in CI logs
+  verbose: true
+
+  # Only scan tracked files (recommended)
+  scan_all_files: false
+
+# =========================
+# Paths
+# =========================
+paths:
+  include:
+    - "**/*.tf"
+    - "**/*.tfvars"
+    - "**/*.tfvars.example"
+    - "**/*.yml"
+    - "**/*.yaml"
+    - "**/*.json"
+    - "**/*.md"
+    - "**/*.sh"
+    - "**/*.ps1"
+
+  exclude:
+    - ".terraform/**"
+    - ".git/**"
+    - "**/*.lock.hcl"
+    - "**/*.zip"
+    - "**/*.log"
+    - "**/*.md"
+
+# =========================
+# Secrets detection tuning
+# =========================
+secrets:
+  # Ignore common false positives in Terraform
+  ignored_patterns:
+    - 'example'
+    - 'changeme'
+    - 'REPLACE_ME'
+    - 'dummy'
+    - 'placeholder'
+
+  # Ignore Terraform variable declarations (values come from tfvars or env)
+  ignored_files:
+    - "**/*.tfvars.example"
+
+# =========================
+# Terraform / IaC context
+# =========================
+iac:
+  terraform:
+    enabled: true
+
+# =========================
+# CI behaviour
+# =========================
+ci:
+  # Exit non-zero when secrets are found
+  exit_code: 1
+
+  # Show remediation hints in CI logs
+  show_secrets: false
