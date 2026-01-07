@@ -34,6 +34,24 @@ variable "deployment_process_steps" { type = any default = [] }
 variable "enable_runbooks" { type = bool default = true }
 variable "runbooks" { type = any default = [] }
 
+variable "projects" {
+  description = "Octopus projects to create"
+  type = map(object({
+    description      = optional(string)
+    is_disabled      = optional(bool, false)
+    project_group    = string
+
+    lifecycle_id     = optional(string)
+
+    git = optional(object({
+      default_branch = string
+      base_path      = string
+      url            = string
+      credentials_id = string
+    }))
+  }))
+}
+
 variable "git_persistence_settings" {
   type = object({
     default_branch = string
